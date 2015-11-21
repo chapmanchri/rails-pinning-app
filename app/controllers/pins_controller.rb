@@ -22,10 +22,25 @@ class PinsController < ApplicationController
 
     if @pin.valid?
       @pin.save
+      flash[:success] = "This pin has just been created."
       redirect_to pin_path(@pin)
     else
       @errors = @pin.errors
       render :new
+    end
+  end
+
+  def edit
+    @pin = Pin.find(params[:id])
+  end
+
+  def update
+    @pin = Pin.find(params[:id])
+    if @pin.update_attributes(pin_params)
+      flash[:success] = "This pin has just been updated."
+      redirect_to pin_path(@pin)
+    else
+      render :edit
     end
   end
 
