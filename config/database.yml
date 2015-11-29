@@ -88,4 +88,3 @@ test:
 
 production:
   url: <%= ENV['DATABASE_URL'] %>
-  #configure environment varialbles for AWS
