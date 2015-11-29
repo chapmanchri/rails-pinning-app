@@ -1,6 +1,6 @@
 <h3>Hello World Form</h3>
 
-<%= form_for(@pin) do |f| %>
+<%= form_for(@pin, multipart: true) do |f| %>
 
   <% if @pin.errors.any? %>
     <div id="error_explanation">
