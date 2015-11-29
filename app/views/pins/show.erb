@@ -16,7 +16,16 @@
       <%= "#{@pin.url}" %>
     </a>
   </p>
+
+  <% if @pin.image_file_name != nil %>
+  <img src="<%= @pin.image.url(:medium) %>">
+  <% end %>
+
+
 </div>
+
+
+
 <br/>
 <a href="/">
   <i class="fa fa-chevron-circle-left"></i>

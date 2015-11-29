@@ -49,3 +49,6 @@ end
 
 gem 'rspec'
 gem 'rspec-rails'
+gem 'paperclip'
+#Amazon web service for images
+gem 'aws-sdk', '< 2.0'

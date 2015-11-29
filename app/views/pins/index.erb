@@ -11,7 +11,9 @@
           <div class="pin">
             <div class="pin-header row">
               <div class="logo-thumbnail col-xs-3">
-                <% if "#{pin.category.name}" == "rails" %>
+                <% if pin.image_file_name != nil %>
+                  <img src="<%= pin.image.url(:thumb) %>" class = "img-circle" >
+                <% elsif "#{pin.category.name}" == "rails" %>
                   <%= image_tag('rails-logo-thumbnail.png') %>
                   <% elsif "#{pin.category.name}" == 'ruby' %>
                   <%= image_tag('ruby-logo-thumbnail.png') %>
@@ -28,6 +30,7 @@
             </div>
             <hr/>
             <p class="text"><%= "#{pin.text}" %></p>
+            <hr />
           </div>
         </div>
       <% end %>
