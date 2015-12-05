@@ -1,21 +1,31 @@
 class User < ActiveRecord::Base
 
-  def self.authenticate(email, password)
+  validates_presence_of :first_name, :last_name, :email, :password
 
-    puts email * 100
+  validates_uniqueness_of :email
+
+  has_secure_password
+
+  def self.authenticate(email, password)
+    # @user = User.find_by_email(email)
+    # if @user == nil
+    #   return false
+    # elsif @user.password == password
+    #   return true
+    #   # email and password MATCH
+    # else
+    #   return false
+    #   # email matches, password DOES NOT
+    # end
     @user = User.find_by_email(email)
-    if @user == nil
-      return false
-      # email DOES NOT match
-    elsif @user.password == password
-      return true
-      # email and password MATCH
-    else
-      return false
-      # email matches, password DOES NOT
+
+    if !@user.nil?
+      if @user.authenticate(password)
+        return @user
+      end
     end
 
-
+    return nil
   end
 
 end

@@ -20,29 +20,106 @@ require 'spec_helper'
 
 RSpec.describe UsersController, type: :controller do
 
+
+    before(:each) do
+      @user = FactoryGirl.build(:user)
+    end
+
+    after(:each) do
+      if !@user.destroyed?
+        @user.destroy
+      end
+    end
+
+    let(:valid_attributes) {
+      {
+        first_name: @user.first_name,
+        last_name: @user.last_name,
+        email: @user.email,
+        password: @user.password
+      }
+    }
+
+    let(:invalid_attributes) {
+      {
+        first_name: @user.first_name,
+        password: @user.password
+      }
+    }
+
+
+
+
   # This should return the minimal set of attributes required to create a valid
   # User. As you add validations to User, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+  # let(:valid_attributes) {
+  #   skip("Add a hash of attributes valid for your model")
+  # }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  # let(:invalid_attributes) {
+  #   skip("Add a hash of attributes invalid for your model")
+  # }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # UsersController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET #index" do
-    it "assigns all users as @users" do
-      user = User.create! valid_attributes
-      get :index, {}, valid_session
-      expect(assigns(:users)).to eq([user])
+
+
+  describe "POST login" do
+
+    before(:all) do
+      @user = User.create(email: "coder@skillcrush.com", password: "secret", first_name: "Joe", last_name: "Smith")
+      @valid_user_hash = {email: @user.email, password: @user.password}
+      @invalid_user_hash = {email: "", password: ""}
+    end
+
+    after(:all) do
+      if !@user.destroyed?
+        @user.destroy
+      end
+    end
+
+    it "renders the show view if *params* valid" do
+      post :authenticate, @valid_user_hash
+      expect(response).to render_template("show")
+    end
+
+    it "populates @user if params valid" do
+      post :authenticate, @valid_user_hash
+      expect(@user.password).to eq("secret");
+    end
+
+    it "renders the login view if params invalid" do
+      post :authenticate, @invalid_user_hash
+      expect(response).to render_template("login")
+    end
+
+    it "populates the @errors variable if params invalid" do
+      post :authenticate, @invalid_user_hash
+      expect(assigns[:errors].present?).to be(true)
     end
   end
+
+
+  describe "GET login" do
+    it "renders the login view" do
+      get :login
+      expect(response).to render_template("login")
+    end
+  end
+
+  # describe "GET #index" do
+  #
+  #
+  #   it "assigns all users as @users" do
+  #     user = User.create! valid_attributes
+  #     get :index, {}, valid_session
+  #     expect(assigns(:users)).to eq([user])
+  #   end
+  # end
 
   describe "GET #show" do
     it "assigns the requested user as @user" do
@@ -102,15 +179,22 @@ RSpec.describe UsersController, type: :controller do
 
   describe "PUT #update" do
     context "with valid params" do
+
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {
+          first_name: "Bill",
+          last_name: @user.last_name,
+          email: @user.email,
+          password: @user.password
+        }
       }
 
       it "updates the requested user" do
         user = User.create! valid_attributes
         put :update, {:id => user.to_param, :user => new_attributes}, valid_session
         user.reload
-        skip("Add assertions for updated state")
+        # skip("Add assertions for updated state")
+        expect(assigns(:user)).to eq(user)
       end
 
       it "assigns the requested user as @user" do
@@ -133,9 +217,19 @@ RSpec.describe UsersController, type: :controller do
         expect(assigns(:user)).to eq(user)
       end
 
+      let(:invalid_attributes) {
+        {
+          first_name: @user.first_name,
+          password: ""
+        }
+      }
+
       it "re-renders the 'edit' template" do
         user = User.create! valid_attributes
+        puts " * " * 50
+        puts invalid_attributes
         put :update, {:id => user.to_param, :user => invalid_attributes}, valid_session
+        puts " * " * 50
         expect(response).to render_template("edit")
       end
     end

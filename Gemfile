@@ -35,7 +35,7 @@ gem 'puma'
 # Use rails_12factor for standards and best practices for modern web apps
 gem 'rails_12factor'
 
-group :development, :test do
+group :development do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 
@@ -43,12 +43,30 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring', '1.4.0'
-  gem 'database_cleaner'
+  gem 'spring'
+
 end
 
-gem 'rspec'
-gem 'rspec-rails'
+# group :test do
+#     gem 'shoulda-matchers'
+#     gem 'spring', '1.4.0'
+#     gem 'database_cleaner'
+#     gem 'rspec'
+#     gem 'rspec-rails'
+# end
+
+
+group :test do
+  gem 'shoulda-matchers', '~> 3.0'
+  gem 'spring'
+  gem 'database_cleaner'
+  gem 'rspec'
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+end
+
+
 gem 'paperclip'
 #Amazon web service for images
 gem 'aws-sdk', '< 2.0'
+gem 'bcrypt', '~> 3.1.7'
