@@ -2,15 +2,9 @@
 
 <%= form_tag("/login") do %>
 
-<% if @errors.any? %>
+<% if !@errors.empty? %>
   <div id="error_explanation">
-    <h2><%= pluralize(@errors.count, "error") %> prohibited this event from being saved:</h2>
-
-    <ul>
-    <% @errors.each do |message| %>
-      <li><%= message %></li>
-    <% end %>
-    </ul>
+    <h2><%= @errors %></h2>
   </div>
 <% end %>
 

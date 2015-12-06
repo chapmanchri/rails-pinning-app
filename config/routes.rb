@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+
+  delete 'logout/:id' => "users#logout", as: :logout
+
   resources :users, except: [:index]
 
   # The priority is based upon order of creation: first created -> highest priority.
