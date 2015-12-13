@@ -13,6 +13,22 @@ RSpec.configure do |config|
     Rails.application.load_seed # loading seeds
   end
 
+
+
+  def login(user)
+    logged_in_user = User.authenticate(user.email, user.password)
+    #if session id is deleted, check to see if logged in user- if not should route back to login
+    if logged_in_user.present?
+      session[:user_id] = logged_in_user.id
+    end
+  end
+
+  def logout(user)
+    if session[:user_id] == user.id
+      session.delete(:user_id)
+    end
+  end
+
   Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     # Choose a test framework:

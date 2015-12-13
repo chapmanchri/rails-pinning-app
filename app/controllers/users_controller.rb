@@ -1,24 +1,12 @@
 class UsersController < ApplicationController
   before_action :require_login, only: [:show, :edit, :update, :destroy]
 
+
+
   def login
     @errors = ""
     # @user.authenticate
   end
-
-  # def authenticate
-  #   password = params[:password]
-  #   email = params[:email]
-  #   userstatus = false
-  #   userstatus = User.authenticate(email, password)
-  #   if userstatus
-  #     @user = User.find_by_email(email)
-  #     render :show
-  #   else
-  #     @errors = ["Your email and/or password were incorrect. Please try again."]
-  #     render :login
-  #   end
-  # end
 
   def authenticate
     @user = User.authenticate(params[:email], params[:password])
@@ -30,6 +18,8 @@ class UsersController < ApplicationController
       redirect_to user_path(@user)
     end
   end
+
+
 
   # GET /users
   # GET /users.json
@@ -102,9 +92,9 @@ class UsersController < ApplicationController
       params.require(:user).permit(:first_name, :last_name, :email, :password)
     end
 
-    def require_login
-      if current_user.nil?
-        redirect_to :login
-      end
-    end
+    # def require_login
+    #   if current_user.nil?
+    #     redirect_to :login
+    #   end
+    # end
 end

@@ -12,6 +12,8 @@
     </div>
   <% end %>
 
+  <%= f.hidden_field :user_id, value: current_user.id %>
+
   <div class="form-group">
     <label for="pin_title">Title</label>
     <%= f.text_field :title, class: "form-control"%>

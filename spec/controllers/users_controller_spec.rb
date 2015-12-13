@@ -70,31 +70,21 @@ RSpec.describe UsersController, type: :controller do
 
   describe "POST login" do
 
-    before(:all) do
+    before(:each) do
       @user = User.create(email: "coder@skillcrush.com", password: "secret", first_name: "Joe", last_name: "Smith")
       @valid_user_hash = {email: @user.email, password: @user.password}
       @invalid_user_hash = {email: "", password: ""}
     end
 
-    after(:all) do
+    after(:each) do
       if !@user.destroyed?
         @user.destroy
       end
     end
 
     it "renders the show view if *params* valid" do
-      puts " * " * 100
-
       post :authenticate, @valid_user_hash
-      puts @user.email
-      # puts current_user.f
-      puts @user.password
-      puts " * " * 100
-      # expect(response).to render_template("show")
-      # expect(response).to render_template("edit")
-      expect(response).to redirect_to('/users/1')
-      # above works for now
-
+      expect(response).to redirect_to("/users/#{@user.id}")
     end
 
     it "populates @user if params valid" do
@@ -121,15 +111,26 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
-  # describe "GET #index" do
-  #
-  #
-  #   it "assigns all users as @users" do
-  #     user = User.create! valid_attributes
-  #     get :index, {}, valid_session
-  #     expect(assigns(:users)).to eq([user])
-  #   end
-  # end
+  describe "GET #index" do
+
+    before(:each) do
+      # @user = User.create(email: "coder@skillcrush.com", password: "secret", first_name: "Joe", last_name: "Smith")
+      @valid_user_hash = {email: @user.email, password: @user.password}
+      @invalid_user_hash = {email: "", password: ""}
+    end
+
+    after(:each) do
+      if !@user.destroyed?
+        @user.destroy
+      end
+    end
+
+    # it "assigns all users as @users" do
+    #   user = User.create! valid_attributes
+    #   get :index, {:id => user.to_param}, valid_session
+    #   expect(assigns(:users)).to eq([user])
+    # end
+  end
 
 
   describe "Get #show" do
@@ -151,6 +152,7 @@ RSpec.describe UsersController, type: :controller do
   describe "GET #show" do
     it "assigns the requested user as @user" do
       user = User.create! valid_attributes
+      puts "to post" * 34
       post :authenticate, {email: @user.email, password: @user.password}
       get :show, {:id => user.to_param}, valid_session
       expect(assigns(:user)).to eq(user)

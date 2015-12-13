@@ -7,6 +7,16 @@ Pin.create(
   # resource_type: "rails"
   category_id: 2
   )
+
+  Category.create(
+    name: 'ruby'
+  )
+  Category.create(
+    name: 'rails'
+  )
+  Category.create(
+    name: 'unknown'
+  )
 # Pin.create(
 #   title: 'Rails for Zombies',
 #   url: 'http://railsforzombies.org',
